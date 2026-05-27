@@ -20,6 +20,17 @@ function DashboardContent() {
   const [stats, setStats] = useState<DashboardStats>({ total: 0, todo: 0, inProgress: 0, done: 0, overdue: 0 });
 
   useEffect(() => {
+    const hasToken = document.cookie.split(";").some((item) => item.trim().startsWith("auth_token="));
+    if (hasToken && error === "unauthorized") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("error");
+      window.history.replaceState({}, "", url.pathname + url.search);
+      // Force reload or state update if necessary, or just rely on local state/navigation.
+      window.location.reload();
+    }
+  }, [error]);
+
+  useEffect(() => {
     fetch("/api/tasks")
       .then((res) => res.json())
       .then((tasks: Task[]) => {
