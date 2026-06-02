@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const timestamp = new Date().toISOString();
 
-  console.log(`[Middleware] Path: ${path} | Time: ${timestamp}`);
+  console.log(`[Proxy] Path: ${path} | Time: ${timestamp}`);
 
   const authToken = request.cookies.get("auth_token")?.value;
 
